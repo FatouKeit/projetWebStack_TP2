@@ -11,12 +11,14 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/socket.io": "^3.0.1",
     "express": "^5.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "dependencies": {
     "@types/express": "^5.0.2",
-    "@types/node": "^22.15.21"
+    "@types/node": "^22.15.21",
+    "socket.io": "^4.8.1"
   }
 }
