@@ -33,6 +33,8 @@ const EventPage: React.FC = () => {
     const dispatch = useDispatch()
 
     const isMobileDevice = useIsMobile()
+    const isAdminRoute = location.pathname.includes('/admin')
+
     const [forceMobile, setForceMobile] = React.useState(false)
 
     const isMobile = isMobileDevice || forceMobile
@@ -41,6 +43,22 @@ const EventPage: React.FC = () => {
         (state: RootState) => state.events
     )
     const { questionId } = useParams<{ eventId: string; questionId?: string }>()
+
+    
+
+  const canDeleteQuestion = isAdminRoute && isMobile
+
+  const deleteQuestion = (questionId: string) => {
+    if (!eventId) return
+  
+    dispatch({
+      type: 'events/deleteQuestion',
+      payload: { eventId, questionId },
+    })
+   
+  }
+
+
 
     useEffect(() => {
         if (eventId) {
@@ -87,52 +105,55 @@ const EventPage: React.FC = () => {
         dispatch(createQuestion({ eventId, question: newQuestion }))
     }
     const selectedEvent = events.find((e) => e.id === eventId)
+
     if (!selectedEvent) return <div>Événement introuvable</div>
 
     if (!currentEvent) return <div>Événement introuvable</div>
 
     return (
-        <div
-            className={`flex flex-col min-h-screen bg-gray-100 ${
-                forceMobile
-                    ? 'max-w-[420px] mx-auto border border-dashed border-gray-400'
-                    : ''
-            }`}
-        >
-            <AppToolbar
-                events={events}
-                onSelectEvent={handleEventChange}
-                currentEvent={currentEvent}
-                isMobile={isMobile}
-                toggleMobile={() => setForceMobile((prev) => !prev)}
-            />
+  <div
+    className={`flex flex-col min-h-screen bg-gray-100 ${
+      forceMobile
+        ? 'max-w-[420px] mx-auto border border-dashed border-gray-400'
+        : ''
+    }`}
+  >
+    <AppToolbar
+      events={events}
+      onSelectEvent={handleEventChange}
+      currentEvent={currentEvent}
+      isMobile={isMobile}
+      toggleMobile={() => setForceMobile((prev) => !prev)}
+    />
 
-            {isMobile && (
-                <div className="mb-4">
-                    <WriteQuestion onAdd={addQuestion} />
-                </div>
-            )}
+    {isMobile && (
+      <div className="mb-4">
+        <WriteQuestion onAdd={addQuestion} />
+      </div>
+    )}
 
-            <main className="p-4 space-y-4">
-                {currentQuestion ? (
-                    <div className="bg-white p-4 rounded shadow-md border-l-4 border-blue-500">
-                        <h2 className="font-bold">Question sélectionnée :</h2>
-                        <p className="mt-2">{currentQuestion.content}</p>
-                        <p className="text-sm text-gray-500 mt-1">
-                            Auteur : {currentQuestion.author}
-                        </p>
-                    </div>
-                ) : (
-                    <QuestionList
-                        eventId={selectedEvent.id}
-                        isMobile={isMobile}
-                    />
-                )}
-
-                <EventPanel eventId={currentEvent.id} />
-            </main>
+    <main className="p-4 space-y-4">
+      {currentQuestion ? (
+        <div className="bg-white p-4 rounded shadow-md border-l-4 border-blue-500">
+          <h2 className="font-bold">Question sélectionnée :</h2>
+          <p className="mt-2">{currentQuestion.content}</p>
+          <p className="text-sm text-gray-500 mt-1">
+            Auteur : {currentQuestion.author}
+          </p>
         </div>
-    )
+      ) : (
+        <QuestionList
+          eventId={selectedEvent.id}
+          isMobile={isMobile}
+          canDeleteQuestion={canDeleteQuestion}
+          onDeleteQuestion={deleteQuestion}
+        />
+      )}
+
+      <EventPanel eventId={currentEvent.id} />
+    </main>
+  </div>
+)
 }
 
 function App() {

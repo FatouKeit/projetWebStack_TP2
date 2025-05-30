@@ -40,7 +40,6 @@ export const eventsSlice = createSlice({
             }),
         },
 
-        // affichage d'une seule question
         setCurrentQuestion: {
             reducer: (state, action: PayloadAction<Question | null>) => {
                 state.currentQuestion = action.payload
@@ -92,6 +91,32 @@ export const eventsSlice = createSlice({
             }),
         },
 
+        deleteQuestion: {
+            reducer: (
+                state,
+                action: PayloadAction<{ eventId: string; questionId: string }>
+            ) => {
+                const { eventId, questionId } = action.payload
+                const event = state.events.find((e) => e.id === eventId)
+                if (event) {
+                    event.questions = event.questions.filter(
+                        (q) => q.id !== questionId
+                    )
+                }
+                
+                if (
+                    state.currentQuestion &&
+                    state.currentQuestion.id === questionId
+                ) {
+                    state.currentQuestion = null
+                }
+            },
+            prepare: (payload: { eventId: string; questionId: string }) => ({
+                payload,
+                meta: { remote: false },
+            }),
+        },
+
         setEvents: (state, action: PayloadAction<Event[]>) => {
             state.events = action.payload
         },
@@ -103,6 +128,7 @@ export const {
     setCurrentQuestion,
     createQuestion,
     upvoteQuestion,
+    deleteQuestion,
     setEvents,
 } = eventsSlice.actions
 
