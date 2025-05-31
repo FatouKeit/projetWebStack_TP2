@@ -25,3 +25,6 @@ app.get('*', (req, res) => {
 });
 
 demarrage : node dist/index.js
+
+* Le serveur recoit et lis toutes les communications.
+* Tout se fait en temps réel.
