@@ -6,9 +6,11 @@ http://localhost:5173/admin/event/1 ou http://localhost:5173/participant/event/1
 
 # NB :
 L'application est sous forme web et aussi sous forme mobile(réduire la fenetre et automatiquement l'application ajoutera de nouvelles fonctionnalités ) comme l'ajout de nouvelles questions, votes, suppression des questions, dessiner les formes.
-* la suppression des questions n'est permis que pour les admins.
+* possibilité de basculer en mode ordinateur ou mobile
 * Possibilité de changer d'evenement.
 * Possibilté de cliquer sur une question, ce qui enverra sur une autre page spécifique a la question avec * possibilité de changer de question liées a meme evenement.
+* Application belle et conviviale avec utilisation de tailwin
+*** la suppression des questions n'est permis que pour les admins en mode mobile. ***
 
 # Côté client :
 lancer : npm run dev
