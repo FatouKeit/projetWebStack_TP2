@@ -103,7 +103,7 @@ export const eventsSlice = createSlice({
                         (q) => q.id !== questionId
                     )
                 }
-                
+
                 if (
                     state.currentQuestion &&
                     state.currentQuestion.id === questionId
